@@ -1,15 +1,22 @@
 import { INestApplication, Injectable } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { config } from "dotenv";
+import { DataSource, DataSourceOptions } from "typeorm";
+import { modelList } from "../repository/model/_model-list";
 config()
+
+type Enviroment = 'PRODUCTION' | 'HOMOLOGATION' | 'DEVELOPMENT'
 
 @Injectable()
 export class ConfigAdapter {
-    public environment: string = process.env.ENVIRONMENT! ?? 'PRODUCTION'
+    public environment: Enviroment = (process.env.ENVIRONMENT! ?? 'PRODUCTION') as Enviroment
+    public productionMode: boolean = this.environment == 'PRODUCTION'
     public port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000
     public title: string = process.env.TITLE ?? 'Product menegment'
     public description: string = process.env.DISCRIPTION ?? 'This api helps on meneging products, note, does not menege the inventory'
     public tagList: Array<string> = ['product', `price`]
+
+    public databasePath: string = process.env.DATABASE_PATH ?? `${__dirname}/../database/database.sqlite`
 
     public swagger(app: INestApplication<any>) {
         const swaggerConfigrer = new DocumentBuilder()
@@ -20,7 +27,7 @@ export class ConfigAdapter {
             const tag = this.tagList[i];
             swaggerConfigrer.addTag(tag)
         }
-            
+
 
         const swaggerConfig = swaggerConfigrer.build()
         SwaggerModule.setup('api', app, () => SwaggerModule.createDocument(app, swaggerConfig))
@@ -30,11 +37,32 @@ export class ConfigAdapter {
         return await app.listen(
             this.port,
             () => {
-                if (this.environment == 'DEVELOP') {
+                if (!this.productionMode) {
                     console.debug(`Application ruinning on door ${this.port}`)
                 }
             }
         )
     }
 
+    public dataSource(): DataSource {
+        let databseOption: DataSourceOptions = {
+            type: 'sqlite',
+            database: this.databasePath,
+            entities: [...modelList],
+            synchronize: !this.productionMode,
+            logging: !this.productionMode
+        }
+        return new DataSource(databseOption)
+    }
+
+    public dataBootstrap(dataSource: DataSource, dataConfigCallback: (dataSource: DataSource) => void = (ret: DataSource) => {}) {
+        return dataSource.initialize()
+            .then((ret: DataSource) => {
+                if(!this.productionMode){
+                    console.debug(ret.options);
+                }
+                dataConfigCallback(ret)
+            })
+            .catch((error) => console.error(error))
+    }
 }
