@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppBusiness } from './app.business';
+import { AppController } from './controller/app.controller';
+import { AppBusiness } from './business/app.business';
 import { ConfigAdapter } from './business/adapter/config.adapter';
 
 @Module({
