@@ -18,6 +18,8 @@ export class ConfigAdapter {
 
     public databasePath: string = process.env.DATABASE_PATH ?? `${__dirname}/../database/database.sqlite`
 
+    private dataSource: DataSource
+
     public swagger(app: INestApplication<any>) {
         const swaggerConfigrer = new DocumentBuilder()
             .setTitle(this.title)
@@ -44,24 +46,28 @@ export class ConfigAdapter {
         )
     }
 
-    public dataSource(): DataSource {
-        let databseOption: DataSourceOptions = {
-            type: 'sqlite',
-            database: this.databasePath,
-            entities: [...modelList],
-            synchronize: !this.productionMode,
-            logging: !this.productionMode
+    public getDataSource() {
+        if (!this.dataSource) {
+            let databseOption: DataSourceOptions = {
+                type: 'sqlite',
+                database: this.databasePath,
+                entities: [...modelList],
+                synchronize: !this.productionMode,
+                logging: !this.productionMode
+            }
+            this.dataSource = new DataSource(databseOption)
         }
-        return new DataSource(databseOption)
+        return this.dataSource
     }
 
-    public dataBootstrap(dataSource: DataSource, dataConfigCallback: (dataSource: DataSource) => void = (ret: DataSource) => {}) {
-        return dataSource.initialize()
-            .then((ret: DataSource) => {
+    public databaseBootstrap(dataConfigCallback: (dataSource: DataSource) => void = (ret: DataSource) => {}) {
+        return this.getDataSource()
+            .initialize()
+            .then((dataSource: DataSource) => {
                 if(!this.productionMode){
-                    console.debug(ret.options);
+                    console.debug(dataSource.options);
                 }
-                dataConfigCallback(ret)
+                dataConfigCallback(dataSource)
             })
             .catch((error) => console.error(error))
     }

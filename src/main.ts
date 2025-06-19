@@ -1,22 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigAdapter } from './business/adapter/config.adapter';
-import { dataSource, setDataSource } from './service/database.service';
 import { DataSource, InsertResult } from 'typeorm';
 import { Test } from './business/repository/model/test';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule)
-
-    const config = app.get(ConfigAdapter)
-
-    config.swagger(app)
-
-    config.provedorHttp(app)
-
-    setDataSource(config.dataSource())
-
-    config.dataBootstrap(dataSource, (dataSource: DataSource) => {
+    const persistTestIfDoesntExist = (dataSource: DataSource) => {
         const test = new Test()
 
         test.testString = 'Test'
@@ -37,7 +26,18 @@ async function bootstrap() {
                         })
                 }
             })
+    }
 
+    const app = await NestFactory.create(AppModule)
+
+    const config = app.get(ConfigAdapter)
+
+    config.swagger(app)
+
+    config.provedorHttp(app)
+
+    config.databaseBootstrap((dataSource: DataSource) => {
+        persistTestIfDoesntExist(dataSource)
     })
 }
 

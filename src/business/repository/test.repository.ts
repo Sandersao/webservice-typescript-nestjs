@@ -1,12 +1,16 @@
 import { Repository } from 'typeorm'
 import { Test } from './model/test'
-import { dataSource } from 'src/service/database.service'
+import { ConfigAdapter } from '../adapter/config.adapter'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class TestRepository {
     private model: Repository<Test>
 
-    constructor() {
-        this.model = dataSource.getRepository(Test)
+    constructor(private readonly configAdapter: ConfigAdapter) {
+        this.model = this.configAdapter
+            .getDataSource()
+            .getRepository(Test)
     }
 
     public async select() {
