@@ -8,7 +8,7 @@ config()
 
 type Enviroment = 'PRODUCTION' | 'HOMOLOGATION' | 'DEVELOPMENT'
 
-export class ConfigService {
+export class ConfigSystem {
     public environment: Enviroment = (process.env.ENVIRONMENT! ?? 'PRODUCTION') as Enviroment
     public productionMode: boolean = this.environment == 'PRODUCTION'
     public port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000
@@ -87,11 +87,11 @@ export class ConfigService {
     }
 }
 
-let configService: ConfigService
+let configSystem: ConfigSystem
 
-export const makeConfigService = (): ConfigService => {
-    if(!configService){
-        configService = new ConfigService()
+export const makeConfigSystem = (): ConfigSystem => {
+    if(!configSystem){
+        configSystem = new ConfigSystem()
     }
-    return configService
+    return configSystem
 }

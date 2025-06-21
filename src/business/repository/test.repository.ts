@@ -1,11 +1,11 @@
 import { Repository } from 'typeorm'
 import { Test } from './model/test'
 import { Injectable } from '@nestjs/common'
-import { makeConfigService } from 'src/service/config.service'
+import { makeConfigSystem } from 'src/system/config.system'
 
 @Injectable()
 export class TestRepository {
-    private readonly model: Repository<Test> = makeConfigService()
+    private readonly model: Repository<Test> = makeConfigSystem()
     .getDataSource()
     .getRepository(Test)
 

@@ -1,6 +1,6 @@
 import { Test } from "src/business/repository/model/test"
 import { PromiseInterruptionException } from "src/exeption/promise-interruption.exception"
-import { makeConfigService } from "src/service/config.service"
+import { makeConfigSystem } from "src/system/config.system"
 import { DataSource, InsertResult, Repository } from "typeorm"
 
 export class TestDataInitialization {
@@ -31,7 +31,7 @@ export class TestDataInitialization {
                 }
             })
             .catch((err: PromiseInterruptionException) => {
-                if (makeConfigService().productionMode) {
+                if (makeConfigSystem().productionMode) {
                     console.debug(err)
                 }
             })
