@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { TestRepository } from "./repository/test.repository";
-import { TestResponse } from "src/controller/response/teste.response";
+import { TestListResponse } from "src/controller/response/teste-list.response";
 
 @Injectable()
 export class TestBusiness {
@@ -8,7 +8,7 @@ export class TestBusiness {
         private readonly repository: TestRepository
     ) { }
 
-    public async getSelect(): Promise<TestResponse[]>{
+    public async getSelect(): Promise<TestListResponse[]>{
         return this.repository.select()
     }
 }
