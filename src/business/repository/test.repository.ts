@@ -6,8 +6,8 @@ import { makeConfigSystem } from 'src/system/config.system'
 @Injectable()
 export class TestRepository {
     private readonly model: Repository<Test> = makeConfigSystem()
-    .getDataSource()
-    .getRepository(Test)
+        .getDataSource()
+        .getRepository(Test)
 
     public async select() {
         return this.model.find()

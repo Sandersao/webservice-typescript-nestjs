@@ -11,6 +11,6 @@
 - [X] Basic business structure enhanciment
 - [X] First interligation of repository, business and controller
 - [X] Create default response body
-- [ ] Create folder for response objects
+- [X] Create folder for response objects
 - [ ] Create folder for request objects
 - [ ] Create error handler structure
