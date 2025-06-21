@@ -1,4 +1,4 @@
-export class PaginationResponse {
+export class PaginationResponseSystem {
     public page: number
     public qtde: number
 }
