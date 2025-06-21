@@ -12,5 +12,7 @@
 - [X] First interligation of repository, business and controller
 - [X] Create default response body
 - [X] Create folder for response objects
-- [ ] Create folder for request objects
+- [X] Create folder for request objects
+- [ ] Create a working example for array receive and use in query
 - [ ] Create error handler structure
+- [ ] Auto transform text structure in order to transform text to, upper, lower and only first upper to use for database case insentive querys and defaulting

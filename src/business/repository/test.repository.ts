@@ -2,6 +2,7 @@ import { Repository } from 'typeorm'
 import { Test } from './model/test'
 import { Injectable } from '@nestjs/common'
 import { makeConfigSystem } from 'src/system/config.system'
+import { TestListRequest } from 'src/controller/request/test-list.request'
 
 @Injectable()
 export class TestRepository {
@@ -9,8 +10,9 @@ export class TestRepository {
         .getDataSource()
         .getRepository(Test)
 
-    public async select() {
-        return this.model.find()
+    public async select(request: TestListRequest) {
+        console.log('Request: ', request, Object.getOwnPropertyNames(request), typeof request.testBoolean, request.testBoolean);
+        return this.model.findBy(request)
     }
 
     public async insert(text: string, int: number, bool: boolean) {

@@ -24,11 +24,15 @@ export class TestDataInitialization {
                 return repository.insert(test)
             })
             .then(async (insertResult: InsertResult) => {
+                const insertList: Test[] = []
                 for (const i in insertResult.generatedMaps) {
                     const map = insertResult.generatedMaps[i] as Test
-                    const inserted = await repository.findOneBy(map)
-                    console.log(inserted)
+                    const test = await repository.findOneBy(map)
+                    if (test) {
+                        insertList.push(test)
+                    }
                 }
+                return insertList
             })
             .catch((err: PromiseInterruptionException) => {
                 if (makeConfigSystem().productionMode) {
