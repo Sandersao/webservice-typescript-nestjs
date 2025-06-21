@@ -1,5 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 import { TestBusiness } from "src/business/test.business";
+import { BodyResponse } from "./response/system/body.response";
 
 @Controller('test')
 export class TestController {
@@ -9,6 +10,10 @@ export class TestController {
 
     @Get()
     public async getSelect() {
-        return this.business.getSelect()
+        const testList = await this.business.getSelect()
+        return {
+            message: 'Test list succesfully recoverred',
+            data: testList
+        } as BodyResponse
     }
 }

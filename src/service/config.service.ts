@@ -1,26 +1,41 @@
-import { INestApplication, Injectable } from "@nestjs/common";
+import { INestApplication } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { config } from "dotenv";
+import { dataInitialization } from "src/business/adapter/data-initialization/_data-initialization";
+import { modelList } from "src/business/repository/model/_model-list";
 import { DataSource, DataSourceOptions } from "typeorm";
-import { modelList } from "../repository/model/_model-list";
 config()
 
 type Enviroment = 'PRODUCTION' | 'HOMOLOGATION' | 'DEVELOPMENT'
 
-@Injectable()
-export class ConfigAdapter {
+export class ConfigService {
     public environment: Enviroment = (process.env.ENVIRONMENT! ?? 'PRODUCTION') as Enviroment
     public productionMode: boolean = this.environment == 'PRODUCTION'
     public port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000
     public title: string = process.env.TITLE ?? 'Product menegment'
     public description: string = process.env.DISCRIPTION ?? 'This api helps on meneging products, note, does not menege the inventory'
-    public tagList: Array<string> = ['product', `price`]
+    public tagList: Array<string> = process.env.TAG_LIST?.split(',') ?? ['product', `price`]
 
     public databasePath: string = process.env.DATABASE_PATH ?? `${__dirname}/../database/database.sqlite`
 
     private dataSource: DataSource
+    private application: INestApplication<any>
 
-    public swagger(app: INestApplication<any>) {
+    public bootstrap() {
+        this.swagger()
+        this.provedorHttp()
+        this.databaseBootstrap()
+    }
+
+    public getApplication(application?: INestApplication<any>) {
+        if (!this.application && application) {
+            this.application = application
+        }
+        return this.application
+    }
+
+
+    private swagger() {
         const swaggerConfigrer = new DocumentBuilder()
             .setTitle(this.title)
             .setDescription(this.description)
@@ -30,13 +45,12 @@ export class ConfigAdapter {
             swaggerConfigrer.addTag(tag)
         }
 
-
         const swaggerConfig = swaggerConfigrer.build()
-        SwaggerModule.setup('api', app, () => SwaggerModule.createDocument(app, swaggerConfig))
+        SwaggerModule.setup('api', this.getApplication(), () => SwaggerModule.createDocument(this.getApplication(), swaggerConfig))
     }
 
-    public async provedorHttp(app: INestApplication<any>) {
-        return await app.listen(
+    private async provedorHttp() {
+        return await this.getApplication().listen(
             this.port,
             () => {
                 if (!this.productionMode) {
@@ -60,15 +74,24 @@ export class ConfigAdapter {
         return this.dataSource
     }
 
-    public databaseBootstrap(dataConfigCallback: (dataSource: DataSource) => void = (ret: DataSource) => {}) {
-        return this.getDataSource()
+    private async databaseBootstrap() {
+        await this.getDataSource()
             .initialize()
-            .then((dataSource: DataSource) => {
-                if(!this.productionMode){
-                    console.debug(dataSource.options);
-                }
-                dataConfigCallback(dataSource)
-            })
             .catch((error) => console.error(error))
+
+        if (!this.productionMode) {
+            console.debug(this.getDataSource().options)
+        }
+
+        await dataInitialization(this.getApplication(), this.getDataSource())
     }
+}
+
+let configService: ConfigService
+
+export const makeConfigService = (): ConfigService => {
+    if(!configService){
+        configService = new ConfigService()
+    }
+    return configService
 }

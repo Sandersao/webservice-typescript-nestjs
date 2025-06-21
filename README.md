@@ -10,7 +10,7 @@
 - [X] Database connection via typeorm
 - [X] Basic business structure enhanciment
 - [X] First interligation of repository, business and controller
-- [ ] Create error handler structure
-- [ ] Create default response body
+- [X] Create default response body
 - [ ] Create folder for response objects
 - [ ] Create folder for request objects
+- [ ] Create error handler structure

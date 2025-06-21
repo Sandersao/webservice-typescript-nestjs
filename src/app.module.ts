@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './controller/app.controller';
 import { AppBusiness } from './business/app.business';
-import { ConfigAdapter } from './business/adapter/config.adapter';
 import { TestController } from './controller/test.controller';
 import { TestBusiness } from './business/test.business';
 import { TestRepository } from './business/repository/test.repository';
+import { TestDataInitialization } from './business/adapter/data-initialization/teste.data-initialization';
 
 @Module({
   imports: [],
@@ -13,11 +13,10 @@ import { TestRepository } from './business/repository/test.repository';
     TestController
   ],
   providers: [
-    ConfigAdapter,
     AppBusiness,
     TestBusiness,
-    TestRepository
-  ],
-  exports: [ConfigAdapter]
+    TestRepository,
+    TestDataInitialization
+  ]
 })
 export class AppModule {}
