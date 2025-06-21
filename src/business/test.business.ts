@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { TestRepository } from "./repository/test.repository";
-import { TestListResponse } from "src/controller/response/teste-list.response";
+import { TestListResponse } from "src/controller/response/test-list.response";
 
 @Injectable()
 export class TestBusiness {

@@ -1,7 +1,7 @@
 import { Controller, Get } from "@nestjs/common";
 import { TestBusiness } from "src/business/test.business";
 import { BodyResponse } from "./response/system/body.response";
-import { TestListResponse } from "./response/teste-list.response";
+import { TestListResponse } from "./response/test-list.response";
 
 @Controller('test')
 export class TestController {
