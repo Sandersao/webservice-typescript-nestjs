@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { TestRepository } from "./repository/test.repository";
 import { TestListRequest } from "src/controller/request/test-list.request";
 import { TestInsertRequest } from "src/controller/request/test-insert.request";
@@ -15,13 +15,10 @@ export class TestBusiness {
     public async select(request: TestListRequest) {
         const testList = await this.repository.select(request)
 
-        if(testList.length == 0){
+        if (testList.length == 0) {
             throw new NoContentException('No test recovered for the informed filters')
         }
 
-        /** @todo Trow this exception as a all right error */
-        /** It must be throun when there is no itens on the item */
-        // 'No test recovered for the filters informed'
         return testList
     }
 
@@ -30,10 +27,18 @@ export class TestBusiness {
     }
 
     public async update(request: TestUpdateRequest) {
+        const test = await this.repository.selectOne(request)
+        if (!test) {
+            throw new NotFoundException('Test not found for update')
+        }
         return this.repository.update(request)
     }
 
     public async delete(request: TestDeleteRequest) {
+        const test = await this.repository.selectOne(request)
+        if (!test) {
+            throw new NotFoundException('Test not found for delete')
+        }
         return this.repository.delete(request)
     }
 }

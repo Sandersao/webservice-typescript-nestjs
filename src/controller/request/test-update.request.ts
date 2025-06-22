@@ -1,11 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { Type } from "class-transformer"
-import { IsArray, IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
+import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
 
 export class TestUpdateRequest {
     @ApiProperty({ required: false, type: Number})
     @Type(() => Number)
-    @IsArray()
+    @IsNumber()
     public id?: number
 
     @ApiProperty({ required: false })

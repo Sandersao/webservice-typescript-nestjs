@@ -6,6 +6,7 @@ import { TestListRequest } from 'src/controller/request/test-list.request'
 import { TestInsertRequest } from 'src/controller/request/test-insert.request'
 import { TestUpdateRequest } from 'src/controller/request/test-update.request'
 import { TestDeleteRequest } from 'src/controller/request/test-delete.request'
+import { TestSelectOneRequest } from 'src/controller/request/test-select-one.request copy'
 
 @Injectable()
 export class TestRepository {
@@ -15,6 +16,10 @@ export class TestRepository {
 
     public async select(request: TestListRequest): Promise<Test[]> {
         return this.model.findBy(request)
+    }
+
+    public async selectOne(request: TestSelectOneRequest): Promise<Test | null> {
+        return this.model.findOneBy(request)
     }
 
     public async insert(request: TestInsertRequest): Promise<Test> {
