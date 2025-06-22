@@ -1,13 +1,14 @@
 import { Test } from "src/business/repository/model/test"
 import { PromiseInterruptionException } from "src/exeption/promise-interruption.exception"
 import { makeConfigSystem } from "src/system/config.system"
+import { makeTextTransformSystem } from "src/system/text-transform.sysem"
 import { DataSource, InsertResult, Repository } from "typeorm"
 
 export class TestDataInitialization {
     public start(dataSource: DataSource) {
         const test = new Test()
 
-        test.testString = 'Test'
+        test.testString = makeTextTransformSystem().toUpper('Test')!
         test.testNumber = 1
         test.testBoolean = true
 

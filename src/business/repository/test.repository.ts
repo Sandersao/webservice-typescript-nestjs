@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm'
+import { FindOperator, Like, Repository } from 'typeorm'
 import { Test } from './model/test'
 import { Injectable } from '@nestjs/common'
 import { makeConfigSystem } from 'src/system/config.system'
@@ -7,6 +7,7 @@ import { TestInsertRequest } from 'src/controller/request/test-insert.request'
 import { TestUpdateRequest } from 'src/controller/request/test-update.request'
 import { TestDeleteRequest } from 'src/controller/request/test-delete.request'
 import { TestSelectOneRequest } from 'src/controller/request/test-select-one.request copy'
+import { makeTextTransformSystem } from 'src/system/text-transform.sysem'
 
 @Injectable()
 export class TestRepository {
@@ -15,6 +16,9 @@ export class TestRepository {
         .getRepository(Test)
 
     public async select(request: TestListRequest): Promise<Test[]> {
+        if (request.testString) {
+            request.testString = Like(`%${makeTextTransformSystem().toUpper(request.testString)}%`) as any
+        }
         return this.model.findBy(request)
     }
 
@@ -24,7 +28,7 @@ export class TestRepository {
 
     public async insert(request: TestInsertRequest): Promise<Test> {
         const test = new Test()
-        test.testString = request.testString
+        test.testString = makeTextTransformSystem().toUpper(request.testString)!
         test.testNumber = request.testNumber
         test.testBoolean = request.testBoolean
         return this.model.save(test)
@@ -34,7 +38,7 @@ export class TestRepository {
         return this.model.findOneBy({ id: request.id })
             .then((test: Test) => {
                 if (request.testString) {
-                    test.testString = request.testString
+                    test.testString = makeTextTransformSystem().toUpper(request.testString)!
                 }
                 if (request.testNumber) {
                     test.testNumber = request.testNumber
