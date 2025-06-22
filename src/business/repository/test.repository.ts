@@ -3,6 +3,9 @@ import { Test } from './model/test'
 import { Injectable } from '@nestjs/common'
 import { makeConfigSystem } from 'src/system/config.system'
 import { TestListRequest } from 'src/controller/request/test-list.request'
+import { TestInsertRequest } from 'src/controller/request/test-insert.request'
+import { TestUpdateRequest } from 'src/controller/request/test-update.request'
+import { TestDeleteRequest } from 'src/controller/request/test-delete.request'
 
 @Injectable()
 export class TestRepository {
@@ -10,25 +13,30 @@ export class TestRepository {
         .getDataSource()
         .getRepository(Test)
 
-    public async select(request: TestListRequest) {
-        console.log('Request: ', request, Object.getOwnPropertyNames(request), typeof request.testBoolean, request.testBoolean);
+    public async select(request: TestListRequest): Promise<Test[]> {
         return this.model.findBy(request)
     }
 
-    public async insert(text: string, int: number, bool: boolean) {
+    public async insert(request: TestInsertRequest): Promise<Test> {
         const test = new Test()
-        test.testString = text
-        test.testNumber = int
-        test.testBoolean = bool
+        test.testString = request.testString
+        test.testNumber = request.testNumber
+        test.testBoolean = request.testBoolean
         return this.model.save(test)
     }
 
-    public async update(id: number, text: string, int: number, bool: boolean) {
-        return this.model.findOneBy({ id: id })
+    public async update(request: TestUpdateRequest): Promise<Test> {
+        return this.model.findOneBy({ id: request.id })
             .then((test: Test) => {
-                test.testString = text
-                test.testNumber = int
-                test.testBoolean = bool
+                if (request.testString) {
+                    test.testString = request.testString
+                }
+                if (request.testNumber) {
+                    test.testNumber = request.testNumber
+                }
+                if (request.testBoolean) {
+                    test.testBoolean = request.testBoolean
+                }
                 return test
             })
             .then((test: Test) => {
@@ -36,8 +44,8 @@ export class TestRepository {
             })
     }
 
-    public async delete(id: number) {
-        return this.model.findOneBy({ id: id })
+    public async delete(request: TestDeleteRequest): Promise<Test> {
+        return this.model.findOneBy({ id: request.id })
             .then((test: Test) => {
                 return this.model.remove(test)
             })

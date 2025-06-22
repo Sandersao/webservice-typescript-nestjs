@@ -1,4 +1,4 @@
-export class TestListResponse{
+export class TestResponse{
     constructor(
         public id: number,
         public testString: string,

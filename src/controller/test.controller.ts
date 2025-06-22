@@ -1,8 +1,11 @@
-import { Controller, Get, Query, ValidationPipe } from "@nestjs/common";
+import { Controller, Delete, Get, Post, Put, Query, ValidationPipe } from "@nestjs/common";
 import { TestBusiness } from "src/business/test.business";
 import { BodyResponseSystem } from "../system/body-response.system";
-import { TestListResponse } from "./response/test-list.response";
 import { TestListRequest } from "./request/test-list.request";
+import { TestInsertRequest } from "./request/test-insert.request";
+import { TestUpdateRequest } from "./request/test-update.request";
+import { TestDeleteRequest } from "./request/test-delete.request";
+import { TestResponse } from "./response/test.response";
 
 @Controller('test')
 export class TestController {
@@ -11,11 +14,38 @@ export class TestController {
     ) { }
 
     @Get()
-    public async getSelect(@Query(new ValidationPipe()) request: TestListRequest) {
-        const testList = await this.business.getSelect(request)
+    public async select(@Query(new ValidationPipe()) request: TestListRequest) {
+        const testList = await this.business.select(request)
         return {
-            message: testList.length > 0 ? 'Test list succesfully recoverred' : 'No test recovered for the filters informed',
+            message: 'Test list succesfully recoverred',
             data: testList
-        } as BodyResponseSystem<TestListResponse[]>
+        } as BodyResponseSystem<TestResponse[]>
+    }
+
+    @Post()
+    public async insert(@Query(new ValidationPipe()) request: TestInsertRequest) {
+        const testList = await this.business.insert(request)
+        return {
+            message: 'Test succesfully registered',
+            data: testList
+        } as BodyResponseSystem<TestResponse>
+    }
+
+    @Put()
+    public async update(@Query(new ValidationPipe()) request: TestUpdateRequest) {
+        const testList = await this.business.update(request)
+        return {
+            message: 'Test list succesfully recoverred',
+            data: testList
+        } as BodyResponseSystem<TestResponse>
+    }
+
+    @Delete()
+    public async delete(@Query(new ValidationPipe()) request: TestDeleteRequest) {
+        const testList = await this.business.delete(request)
+        return {
+            message: testList ? 'Test list succesfully recoverred' : 'No test recovered for the filters informed',
+            data: testList
+        } as BodyResponseSystem<TestResponse>
     }
 }

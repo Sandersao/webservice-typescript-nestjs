@@ -13,6 +13,6 @@
 - [X] Create default response body
 - [X] Create folder for response objects
 - [X] Create folder for request objects
-- [ ] Create a working example for array receive and use in query
 - [ ] Create error handler structure
+- [ ] Create a working example for array receive and use in query
 - [ ] Auto transform text structure in order to transform text to, upper, lower and only first upper to use for database case insentive querys and defaulting
