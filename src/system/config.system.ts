@@ -12,11 +12,11 @@ export class ConfigSystem {
     public environment: Enviroment = (process.env.ENVIRONMENT! ?? 'PRODUCTION') as Enviroment
     public productionMode: boolean = this.environment == 'PRODUCTION'
     public port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000
-    public title: string = process.env.TITLE ?? 'Product menegment'
-    public description: string = process.env.DISCRIPTION ?? 'This api helps on meneging products, note, does not menege the inventory'
-    public tagList: Array<string> = process.env.TAG_LIST?.split(',') ?? ['product', `price`]
+    public title: string = process.env.TITLE ?? 'Not named API'
+    public description: string = process.env.DISCRIPTION ?? 'A test discription'
+    public tagList: Array<string> = process.env.TAG_LIST?.split(',') ?? ['test', 'poc']
 
-    public databasePath: string = process.env.DATABASE_PATH ?? `${__dirname}/../database/database.sqlite`
+    public databasePath: string = process.env.DATABASE_PATH ?? `${__dirname}/../../database/database.sqlite`
 
     private dataSource: DataSource
     private application: INestApplication<any>
@@ -54,7 +54,7 @@ export class ConfigSystem {
             this.port,
             () => {
                 if (!this.productionMode) {
-                    console.debug(`Application ruinning on door ${this.port}`)
+                    console.info(`Application ruinning on door ${this.port}`)
                 }
             }
         )
