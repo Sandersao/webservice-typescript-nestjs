@@ -15,4 +15,4 @@
 - [X] Create folder for request objects
 - [X] Create error handler structure
 - [X] Auto transform text structure in order to transform text to, upper, lower and only first upper to use for database case insentive querys and defaulting
-- [ ] Create a working example for array receive and use in query
+- [X] Create a working example for array receive and use in query

@@ -1,4 +1,4 @@
-import { FindOperator, Like, Repository } from 'typeorm'
+import { In, Like, Repository } from 'typeorm'
 import { Test } from './model/test'
 import { Injectable } from '@nestjs/common'
 import { makeConfigSystem } from 'src/system/config.system'
@@ -16,6 +16,9 @@ export class TestRepository {
         .getRepository(Test)
 
     public async select(request: TestListRequest): Promise<Test[]> {
+        if(request.id){
+            request.id = In(request.id as any) as any
+        }
         if (request.testString) {
             request.testString = Like(`%${makeTextTransformSystem().toUpper(request.testString)}%`) as any
         }
