@@ -20,7 +20,9 @@
 - [ ] Create logic excusion segregated strutcture
     - [ ] Must vigor in a separated table/entity
     - [ ] Must have the exclusion date
-- [ ] Creation on join system
+- [ ] Creation on data system
+    - [ ] Must have the validation for array value
+        - It must be the helper funcion for intercept primitive values and convert them to array, like it's done on the request transformation of id to array
     - [ ] Must be able to join structures based on callback logic
     - [ ] Must have left join method
     - [ ] Can have, inner, right joins method
