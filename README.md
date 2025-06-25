@@ -18,3 +18,5 @@
 - [X] Create a working example for array receive and use in query
 - [ ] Create relationship example
 - [ ] Create logic excusion segregated strutcture
+    - [ ] Must vigor in a separated table/entity
+    - [ ] Must have the exclusion date
