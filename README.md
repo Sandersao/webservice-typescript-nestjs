@@ -25,3 +25,4 @@
     - [ ] Must have left join method
     - [ ] Can have, inner, right joins method
     - [ ] Can be a new cass in system module
+- [ ] Create Data field for the migration with ansi default
