@@ -20,3 +20,8 @@
 - [ ] Create logic excusion segregated strutcture
     - [ ] Must vigor in a separated table/entity
     - [ ] Must have the exclusion date
+- [ ] Creation on join system
+    - [ ] Must be able to join structures based on callback logic
+    - [ ] Must have left join method
+    - [ ] Can have, inner, right joins method
+    - [ ] Can be a new cass in system module
