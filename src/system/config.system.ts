@@ -2,7 +2,7 @@ import { INestApplication } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { config } from "dotenv";
 import { dataInitialization } from "src/business/adapter/data-initialization/_data-initialization";
-import { modelList } from "src/business/repository/model/_model-list";
+import { modelList } from "src/model/_model-list";
 import { DataSource, DataSourceOptions } from "typeorm";
 config()
 

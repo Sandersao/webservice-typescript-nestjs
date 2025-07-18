@@ -9,6 +9,7 @@ export class TestListRequest {
         if(Array.isArray(value)){
             return value
         }
+
         if (typeof value == "object") {
             return Array.from(value)
         }

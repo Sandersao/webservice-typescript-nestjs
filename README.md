@@ -30,3 +30,6 @@
 - [ ] Create Data field for the migration with ansi default
 - [ ] Create example for filter min and max value
     - It could be based on procudct min and max filter
+- [X] Move the model structre from out of the repository and let it it in the src
+- [X] Move the request and response from out of the controler and let them in the src
+- [ ] Understand why the tests ar not working and find the best way to make them work
