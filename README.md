@@ -25,8 +25,9 @@
 - [X] Move the request and response from out of the controler and let them in the src
 - [X] Create example for filter min and max value
     - It could be based on procudct min and max filter
+- [ ] Revise the min/max filter
 - [ ] Creation on data system
-    - [ ] Must have the validation for array value
+    - [X] Must have the validation for array value
         - It must be the helper funcion for intercept primitive values and convert them to array, like it's done on the request transformation of id to array
     - [ ] Must be able to join structures based on callback logic
     - [ ] Must have left join method

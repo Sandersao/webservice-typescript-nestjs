@@ -41,10 +41,7 @@ export class ConfigSystem {
             .setTitle(this.title)
             .setDescription(this.description)
 
-        for (const i in this.tagList) {
-            const tag = this.tagList[i];
-            swaggerConfigrer.addTag(tag)
-        }
+        swaggerConfigrer.addTag(this.tagList.join(', '))
 
         const swaggerConfig = swaggerConfigrer.build()
         SwaggerModule.setup('api', this.getApplication(), () => SwaggerModule.createDocument(this.getApplication(), swaggerConfig))

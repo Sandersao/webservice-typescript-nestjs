@@ -1,24 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { Transform, Type } from "class-transformer"
 import { IsArray, IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
+import { transformToArray } from "src/system/data.system"
 
 export class TestListRequest {
     @ApiProperty({ required: false, type: [Number] })
     @IsOptional()
     @Transform(({ value }) => {
-        if (Array.isArray(value)) {
-            return value
-        }
-
-        if (typeof value == "object") {
-            return Array.from(value)
-        }
-
-        if (typeof value != 'number') {
-            return [parseInt(value)]
-        }
-
-        return [value]
+        return transformToArray<number>(value)
     })
     @Type(() => Array<number>)
     @IsArray()
