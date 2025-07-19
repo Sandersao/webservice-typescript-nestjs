@@ -1,6 +1,7 @@
-import { Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Test } from "./test";
 
+@Entity('tb_test_exclusion')
 export class TestExclusion {
     @PrimaryGeneratedColumn()
     id: number
@@ -8,7 +9,7 @@ export class TestExclusion {
     @Column({ default: 'CURRENT_TIMESTAMP'})
     date: Date
 
-    @ManyToOne(() => Test)
     @Column({name: 'test_id'})
-    testId
+    @ManyToOne(() => Test)
+    testId: number
 }

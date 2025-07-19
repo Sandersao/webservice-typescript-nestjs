@@ -3,10 +3,10 @@ import { Transform, Type } from "class-transformer"
 import { IsArray, IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
 
 export class TestListRequest {
-    @ApiProperty({ required: false, type: [Number]})
+    @ApiProperty({ required: false, type: [Number] })
     @IsOptional()
     @Transform(({ value }) => {
-        if(Array.isArray(value)){
+        if (Array.isArray(value)) {
             return value
         }
 
@@ -22,7 +22,7 @@ export class TestListRequest {
     })
     @Type(() => Array<number>)
     @IsArray()
-    public id?: number
+    public id: number[]
 
     @ApiProperty({ required: false })
     @IsOptional()
@@ -33,7 +33,19 @@ export class TestListRequest {
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
-    public testNumber?: number
+    public testNumber: number
+
+    @ApiProperty({ required: false })
+    @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
+    public testNumberMin?: number
+
+    @ApiProperty({ required: false })
+    @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
+    public testNumberMax?: number
 
     @ApiProperty({ required: false })
     @IsOptional()

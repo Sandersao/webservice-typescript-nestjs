@@ -1,4 +1,4 @@
-import { In, Like, Repository } from 'typeorm'
+import { FindOptionsWhere, In, Like, Repository, MoreThanOrEqual, LessThanOrEqual, Between, FindOperator } from 'typeorm'
 import { Test } from '../../model/test'
 import { Injectable } from '@nestjs/common'
 import { makeConfigSystem } from 'src/system/config.system'
@@ -21,13 +21,26 @@ export class TestRepository {
         .getRepository(TestExclusion)
 
     public async select(request: TestListRequest): Promise<Test[]> {
-        if(request.id){
-            request.id = In(request.id as any) as any
+        const whereConditionList: FindOptionsWhere<Test> | FindOptionsWhere<Test>[] = {}
+        if (request.id) {
+            whereConditionList.id = In(request.id)
         }
         if (request.testString) {
-            request.testString = Like(`%${makeTextTransformSystem().toUpper(request.testString)}%`) as any
+            whereConditionList.testString = Like(`%${makeTextTransformSystem().toUpper(request.testString)}%`) as any
         }
-        return this.model.findBy(request)
+        if (request.testNumber) {
+            whereConditionList.testNumber = request.testNumberMax
+        }
+        if (request.testNumberMax && !request.testNumberMin) {
+            whereConditionList.testNumber = LessThanOrEqual(request.testNumberMax)
+        }
+        if (!request.testNumberMax && request.testNumberMin) {
+            whereConditionList.testNumber = MoreThanOrEqual(request.testNumberMin)
+        }
+        if (!request.testNumberMax && request.testNumberMin) {
+            whereConditionList.testNumber = Between(request.testNumberMin, request.testNumberMax) as FindOperator<number>
+        }
+        return this.model.findBy(whereConditionList)
     }
 
     public async selectOne(request: TestSelectOneRequest): Promise<Test | null> {
@@ -63,7 +76,7 @@ export class TestRepository {
 
     public async delete(request: TestDeleteRequest): Promise<TestExclusion> {
         const excusao = new TestExclusion()
-        excusao.testId = request.id
+        excusao.testId = request.id!
         return this.modelExclusao.save(excusao)
     }
 }
