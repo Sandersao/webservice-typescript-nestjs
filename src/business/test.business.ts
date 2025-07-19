@@ -39,6 +39,7 @@ export class TestBusiness {
         if (!test) {
             throw new NotFoundException('Test not found for delete')
         }
-        return this.repository.delete(request)
+        await this.repository.delete(request)
+        return test
     }
 }

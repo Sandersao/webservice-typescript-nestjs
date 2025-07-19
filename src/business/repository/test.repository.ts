@@ -8,12 +8,17 @@ import { TestUpdateRequest } from 'src/request/test-update.request'
 import { TestDeleteRequest } from 'src/request/test-delete.request'
 import { TestSelectOneRequest } from 'src/request/test-select-one.request copy'
 import { makeTextTransformSystem } from 'src/system/text-transform.sysem'
+import { TestExclusion } from 'src/model/test-exclusion'
 
 @Injectable()
 export class TestRepository {
     private readonly model: Repository<Test> = makeConfigSystem()
         .getDataSource()
         .getRepository(Test)
+
+    private readonly modelExclusao: Repository<TestExclusion> = makeConfigSystem()
+        .getDataSource()
+        .getRepository(TestExclusion)
 
     public async select(request: TestListRequest): Promise<Test[]> {
         if(request.id){
@@ -56,10 +61,9 @@ export class TestRepository {
             })
     }
 
-    public async delete(request: TestDeleteRequest): Promise<Test> {
-        return this.model.findOneBy({ id: request.id })
-            .then((test: Test) => {
-                return this.model.remove(test)
-            })
+    public async delete(request: TestDeleteRequest): Promise<TestExclusion> {
+        const excusao = new TestExclusion()
+        excusao.testId = request.id
+        return this.modelExclusao.save(excusao)
     }
 }
