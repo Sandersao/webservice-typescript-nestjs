@@ -16,7 +16,7 @@
 - [X] Create error handler structure
 - [X] Auto transform text structure in order to transform text to, upper, lower and only first upper to use for database case insentive querys and defaulting
 - [X] Create a working example for array receive and use in query
-- [ ] Create relationship example
+- [X] Create one to many relationship example
 - [ ] Create logic excusion segregated strutcture
     - [ ] Must vigor in a separated table/entity
     - [ ] Must have the exclusion date
