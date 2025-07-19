@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Test } from "./test";
 
 @Entity('tb_test_exclusion')
@@ -10,6 +10,6 @@ export class TestExclusion {
     date: Date
 
     @JoinColumn({name: 'test_id'})
-    @ManyToOne(() => Test)
+    @OneToOne(() => Test)
     testId: number
 }
