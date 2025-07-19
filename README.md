@@ -23,7 +23,7 @@
 - [X] Create Data field for the migration with ansi default
 - [X] Move the model structre from out of the repository and let it it in the src
 - [X] Move the request and response from out of the controler and let them in the src
-- [ ] Create example for filter min and max value
+- [X] Create example for filter min and max value
     - It could be based on procudct min and max filter
 - [ ] Creation on data system
     - [ ] Must have the validation for array value
