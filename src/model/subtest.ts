@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Test } from "./test";
 
 @Entity('tb_subtest')
@@ -9,7 +9,7 @@ export class Subtest {
     @Column()
     category: string
 
+    @JoinColumn({ name: 'test_id' })
     @ManyToOne(() => Test)
-    @Column({ name: 'test_id' })
     testId: number
 }
